@@ -21,7 +21,7 @@ public class TicTacToe {
     }
 
     public void initializeBoard() {
-        for (int i = 0; i < board.length; i++) {
+        for (int i = 0; i < size; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 board[i][j] = new Cell();
             }
@@ -30,7 +30,7 @@ public class TicTacToe {
 
     public void display() {
         System.out.println("-------------------");
-        for (int i = 0; i < board.length; i++) {
+        for (int i = 0; i < size; i++) {
             System.out.print("| ");
             for (int j = 0; j < board[i].length; j++) {
                 System.out.print(board[i][j] + " | ");
@@ -86,37 +86,47 @@ public class TicTacToe {
     }
 
     public boolean isWinner(Player player) {
+        String symbol = player.getRepresentation();
 
         // lignes
-        for (int i = 0; i < board.length; i++) {
-            if (board[i][0].getRepresentation().equals(player.getRepresentation()) &&
-                    board[i][1].getRepresentation().equals(player.getRepresentation()) &&
-                    board[i][2].getRepresentation().equals(player.getRepresentation())) {
-                return true;
-            }
+        for (int i = 0; i < size; i++) {
+            boolean rowWin = true;
+            for (int j = 0; j < size; j++) {
+                if (!board[i][j].getRepresentation().equals(symbol)) {
+                    rowWin = false;
+                    break;
+                }
+            } if (rowWin) return true;
         }
 
         // colonnes
-        for (int j = 0; j < board.length; j++) {
-            if (board[0][j].getRepresentation().equals(player.getRepresentation()) &&
-                    board[1][j].getRepresentation().equals(player.getRepresentation()) &&
-                    board[2][j].getRepresentation().equals(player.getRepresentation())) {
-                return true;
+        for (int j = 0; j < size; j++) {
+            boolean colWin = true;
+            for (int i = 0; i < size; i++) {
+                if (!board[i][j].getRepresentation().equals(symbol)) {
+                   colWin = false;
+                   break;
+                }
+            } if (colWin) return true;
+        }
+
+        // diagonale principale (haut-gauche → bas-droit)
+        boolean diag1Win = true;
+        for (int i = 0; i < size; i++) {
+            if (!board[i][i].getRepresentation().equals(symbol)) {
+                diag1Win = false;
+                break;
             }
-        }
+        } if (diag1Win) return true;
 
-        // diagonales
-        if (board[0][0].getRepresentation().equals(player.getRepresentation()) &&
-                board[1][1].getRepresentation().equals(player.getRepresentation()) &&
-                board[2][2].getRepresentation().equals(player.getRepresentation())) {
-            return true;
-        }
-
-        if (board[0][2].getRepresentation().equals(player.getRepresentation()) &&
-                board[1][1].getRepresentation().equals(player.getRepresentation()) &&
-                board[2][0].getRepresentation().equals(player.getRepresentation())) {
-            return true;
-        }
+        // diagonale secondaire (haut-droit → bas-gauche)
+        boolean diag2Win = true;
+        for (int i = 0; i < size; i++) {
+            if (!board[i][size - 1 - i].getRepresentation().equals(symbol)) {
+                diag2Win = false;
+                break;
+            }
+        } if (diag2Win) return true;
 
         return false;
     }

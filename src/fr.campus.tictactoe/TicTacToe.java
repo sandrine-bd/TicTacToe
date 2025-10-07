@@ -1,6 +1,8 @@
 package fr.campus.tictactoe;
 
+import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class TicTacToe {
     private final int size; // taille du plateau
@@ -18,6 +20,7 @@ public class TicTacToe {
         this.board = new Cell[size][size];
         initializeBoard();
         this.sc = new Scanner(System.in);
+        display();
     }
 
     public void initializeBoard() {
@@ -41,33 +44,47 @@ public class TicTacToe {
     }
 
     public int[] getMoveFromPlayer(Player player) {
+        if (player instanceof HumanPlayer) {
+            while (true) {
+                System.out.print("Entrez le numéro de la ligne : ");
+                if (!sc.hasNextInt()) {
+                    System.out.println("Erreur : vous devez entrer un nombre !");
+                    sc.next(); // vide la mauvaise entrée
+                    continue;
+                }
+                int row = sc.nextInt();
+
+                System.out.print("Entrez le numéro de la colonne : ");
+                if (!sc.hasNextInt()) {
+                    System.out.println("Erreur : vous devez entrer un nombre !");
+                    sc.next();
+                    continue;
+                }
+                int col = sc.nextInt();
+
+                if (row < 0 || row >= size || col < 0 || col >= size) {
+                    System.out.println("Erreur : coordonnées hors du plateau !");
+                    continue;
+                }
+
+                if (!board[row][col].isEmpty()) {
+                    System.out.println("Erreur : cette case est déjà prise !");
+                    continue;
+                }
+                return new int[]{row, col};
+            }
+        }
+
+        // sinon : joueur artificiel
+        Random rand = new Random();
         while (true) {
-            System.out.print("Entrez le numéro de la ligne : ");
-            if (!sc.hasNextInt()) {
-                System.out.println("Erreur : vous devez entrer un nombre !");
-                sc.next(); // vide la mauvaise entrée
-                continue;
-            }
-            int row = sc.nextInt();
+            int row = rand.nextInt(size); // entre 0 (inclus) et size (exclu)
+            int col = rand.nextInt(size);
 
-            System.out.print("Entrez le numéro de la colonne : ");
-            if (!sc.hasNextInt()) {
-                System.out.println("Erreur : vous devez entrer un nombre !");
-                sc.next();
-                continue;
+            if (board[row][col].isEmpty()) {
+                System.out.println("L'IA joue en position " + row + " (ligne), " + col + (" (colonne)"));
+                return new int[]{row, col};
             }
-            int col = sc.nextInt();
-
-            if (row < 0 || row >= size || col < 0 || col >= size) {
-                System.out.println("Erreur : coordonnées hors du plateau !");
-                continue;
-            }
-
-            if (!board[row][col].isEmpty()) {
-                System.out.println("Erreur : cette case est déjà prise !");
-                continue;
-            }
-            return new int[]{row, col};
         }
     }
 
@@ -133,8 +150,6 @@ public class TicTacToe {
 
     public void play() {
         while (true) {
-            display();
-
             System.out.println("\nTOUR DU JOUEUR " + currentPlayer.getRepresentation());
 
             int[] move = getMoveFromPlayer(currentPlayer);
@@ -148,7 +163,7 @@ public class TicTacToe {
             }
 
             if (isWinner(currentPlayer)) {
-                System.out.println("BRAVO ! Le joueur " + currentPlayer.getRepresentation() + " a gagné !");
+                System.out.println("FIN DU JEU ! Le joueur " + currentPlayer.getRepresentation() + " a gagné !");
                 break;
             };
 

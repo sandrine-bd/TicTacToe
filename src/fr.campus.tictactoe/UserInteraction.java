@@ -6,7 +6,7 @@ public class UserInteraction {
     private final static Scanner sc = new Scanner(System.in);
 
     public int setUpBoardSize() {
-        System.out.println("Entrez la taille du plateau (ex : 3 pour 3x3) : ");
+        System.out.print("Entrez la taille du plateau (ex : 3 pour 3x3) : ");
         int size = 0;
         while (size < 3) {
             if (!sc.hasNextInt()) {
@@ -93,6 +93,12 @@ public class UserInteraction {
                 System.out.println("Erreur : coordonnées hors du plateau !");
                 continue;
             }
+
+            if (!board[row][col].isEmpty()) {
+                System.out.println("Impossible ! Case déjà prise");
+                continue;
+            }
+
             return new int[] {row, col};
         }
     }

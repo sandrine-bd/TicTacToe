@@ -9,6 +9,7 @@ public class TicTacToe {
     private final Player player2;
     private Player currentPlayer;
     private final UserInteraction iu = new UserInteraction();
+    private final View view = new View();
 
     public TicTacToe(int size, Player player1, Player player2) { // constructeur
         this.size = size;
@@ -17,6 +18,7 @@ public class TicTacToe {
         this.currentPlayer = player1;
         this.board = new Cell[size][size];
         initializeBoard();
+        view.displayBoard(size, board);
     }
 
     public void initializeBoard() {
@@ -24,18 +26,6 @@ public class TicTacToe {
             for (int j = 0; j < board[i].length; j++) {
                 board[i][j] = new Cell();
             }
-        }
-    }
-
-    public void display() {
-        System.out.println("-------------------");
-        for (int i = 0; i < size; i++) {
-            System.out.print("| ");
-            for (int j = 0; j < board[i].length; j++) {
-                System.out.print(board[i][j] + " | ");
-            }
-            System.out.println();
-            System.out.println("-------------------");
         }
     }
 
@@ -120,8 +110,7 @@ public class TicTacToe {
             System.out.println("\nTOUR DU JOUEUR " + currentPlayer.getRepresentation());
             int[] move = getMoveFromPlayer(currentPlayer);
             setOwner(move[0], move[1], currentPlayer);
-            display();
-
+            view.displayBoard(size, board);
             if (isBoardFull()) {
                 System.out.println("Match nul ! Le plateau est plein.");
                 break;
@@ -130,7 +119,6 @@ public class TicTacToe {
                 System.out.println("FIN DU JEU ! Le joueur " + currentPlayer.getRepresentation() + " a gagné !");
                 break;
             };
-
             currentPlayer = (currentPlayer == player1) ? player2 : player1; // opérateur ternaire pour alterner
         }
     }

@@ -1,16 +1,14 @@
 package fr.campus.tictactoe;
 
 import java.util.Random;
-import java.util.Scanner;
-import java.util.stream.IntStream;
 
 public class TicTacToe {
-    private final int size; // taille du plateau
-    private Cell[][] board; // tableau de cellules
-    private Player player1;
-    private Player player2;
+    private final int size;
+    private final Cell[][] board; // tableau de cellules
+    private final Player player1;
+    private final Player player2;
     private Player currentPlayer;
-    private Scanner sc;
+    private final UserInteraction iu = new UserInteraction();
 
     public TicTacToe(int size, Player player1, Player player2) { // constructeur
         this.size = size;
@@ -19,8 +17,6 @@ public class TicTacToe {
         this.currentPlayer = player1;
         this.board = new Cell[size][size];
         initializeBoard();
-        this.sc = new Scanner(System.in);
-        display();
     }
 
     public void initializeBoard() {
@@ -40,51 +36,6 @@ public class TicTacToe {
             }
             System.out.println();
             System.out.println("-------------------");
-        }
-    }
-
-    public int[] getMoveFromPlayer(Player player) {
-        if (player instanceof HumanPlayer) {
-            while (true) {
-                System.out.print("Entrez le numéro de la ligne : ");
-                if (!sc.hasNextInt()) {
-                    System.out.println("Erreur : vous devez entrer un nombre !");
-                    sc.next(); // vide la mauvaise entrée
-                    continue;
-                }
-                int row = sc.nextInt();
-
-                System.out.print("Entrez le numéro de la colonne : ");
-                if (!sc.hasNextInt()) {
-                    System.out.println("Erreur : vous devez entrer un nombre !");
-                    sc.next();
-                    continue;
-                }
-                int col = sc.nextInt();
-
-                if (row < 0 || row >= size || col < 0 || col >= size) {
-                    System.out.println("Erreur : coordonnées hors du plateau !");
-                    continue;
-                }
-
-                if (!board[row][col].isEmpty()) {
-                    System.out.println("Erreur : cette case est déjà prise !");
-                    continue;
-                }
-                return new int[]{row, col};
-            }
-        }
-
-        // sinon : joueur artificiel
-        Random rand = new Random();
-        while (true) {
-            int row = rand.nextInt(size); // entre 0 (inclus) et size (exclu)
-            int col = rand.nextInt(size);
-
-            if (board[row][col].isEmpty()) {
-                System.out.println("L'IA joue en position " + row + " (ligne), " + col + (" (colonne)"));
-                return new int[]{row, col};
-            }
         }
     }
 
@@ -148,20 +99,33 @@ public class TicTacToe {
         return false;
     }
 
+    public int[] getMoveFromPlayer(Player player) {
+        if (player instanceof HumanPlayer) {
+            return iu.askCellChoice(size, board);
+        }
+        // sinon : joueur artificiel
+        Random rand = new Random();
+        while (true) {
+            int row = rand.nextInt(size); // entre 0 (inclus) et size (exclu)
+            int col = rand.nextInt(size);
+            if (board[row][col].isEmpty()) {
+                System.out.println("L'IA joue en position " + row + " (ligne), " + col + (" (colonne)"));
+                return new int[]{row, col};
+            }
+        }
+    }
+
     public void play() {
         while (true) {
             System.out.println("\nTOUR DU JOUEUR " + currentPlayer.getRepresentation());
-
             int[] move = getMoveFromPlayer(currentPlayer);
             setOwner(move[0], move[1], currentPlayer);
-
             display();
 
             if (isBoardFull()) {
                 System.out.println("Match nul ! Le plateau est plein.");
                 break;
             }
-
             if (isWinner(currentPlayer)) {
                 System.out.println("FIN DU JEU ! Le joueur " + currentPlayer.getRepresentation() + " a gagné !");
                 break;

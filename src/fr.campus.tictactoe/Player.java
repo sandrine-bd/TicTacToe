@@ -7,10 +7,6 @@ public class Player {
         this.representation = representation;
     }
 
-    public Player() {
-
-    }
-
     public String getRepresentation() {
         return representation;
     }

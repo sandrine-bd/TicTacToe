@@ -7,27 +7,27 @@ import fr.campus.tictactoe.player.Player;
 import java.util.Random;
 
 public abstract class Game {
-    private int size;
-    private Cell[][] board; // tableau de cellules
+    private int[] size;
+    private Cell[][] board;
     private Player player1;
     private Player player2;
     private Player currentPlayer;
     private UserInteraction iu = new UserInteraction();
     private View view = new View();
 
-    public Game(int size, Player player1, Player player2) { // constructeur
+    public Game(int[] size, Player player1, Player player2) {
         this.size = size;
         this.player1 = player1;
         this.player2 = player2;
         this.currentPlayer = player1;
-        this.board = new Cell[size][size];
+        this.board = new Cell[size[0]][size[1]];
         initializeBoard();
         view.displayBoard(size, board);
     }
 
     public void initializeBoard() {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < board[i].length; j++) {
+        for (int i = 0; i < size[0]; i++) {
+            for (int j = 0; j < size[1]; j++) {
                 board[i][j] = new Cell();
             }
         }
@@ -51,9 +51,9 @@ public abstract class Game {
         String symbol = player.getRepresentation();
 
         // lignes
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size[0]; i++) {
             boolean rowWin = true;
-            for (int j = 0; j < size; j++) {
+            for (int j = 0; j < size[1]; j++) {
                 if (!board[i][j].getRepresentation().equals(symbol)) {
                     rowWin = false;
                     break;
@@ -62,9 +62,9 @@ public abstract class Game {
         }
 
         // colonnes
-        for (int j = 0; j < size; j++) {
+        for (int j = 0; j < size[1]; j++) {
             boolean colWin = true;
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < size[0]; i++) {
                 if (!board[i][j].getRepresentation().equals(symbol)) {
                     colWin = false;
                     break;
@@ -74,7 +74,7 @@ public abstract class Game {
 
         // diagonale principale (haut-gauche → bas-droit)
         boolean diag1Win = true;
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size[0]; i++) {
             if (!board[i][i].getRepresentation().equals(symbol)) {
                 diag1Win = false;
                 break;
@@ -83,8 +83,8 @@ public abstract class Game {
 
         // diagonale secondaire (haut-droit → bas-gauche)
         boolean diag2Win = true;
-        for (int i = 0; i < size; i++) {
-            if (!board[i][size - 1 - i].getRepresentation().equals(symbol)) {
+        for (int i = 0; i < size[0]; i++) {
+            if (!board[i][size[0] - 1 - i].getRepresentation().equals(symbol)) {
                 diag2Win = false;
                 break;
             }
@@ -100,8 +100,8 @@ public abstract class Game {
         // sinon : joueur artificiel
         Random rand = new Random();
         while (true) {
-            int row = rand.nextInt(size); // entre 0 (inclus) et size (exclu)
-            int col = rand.nextInt(size);
+            int row = rand.nextInt(size[0]); // entre 0 (inclus) et size (exclu)
+            int col = rand.nextInt(size[1]);
             if (board[row][col].isEmpty()) {
                 System.out.println("L'IA joue en position " + row + " (ligne), " + col + (" (colonne)"));
                 return new int[]{row, col};
@@ -111,7 +111,7 @@ public abstract class Game {
 
     public void play() {
         while (true) {
-            System.out.println("\nTOUR DU JOUEUR " + currentPlayer.getRepresentation());
+            System.out.println("\n---- TOUR DU JOUEUR " + currentPlayer.getRepresentation() + " ----");
             int[] move = getMoveFromPlayer(currentPlayer);
             setOwner(move[0], move[1], currentPlayer);
             view.displayBoard(size, board);

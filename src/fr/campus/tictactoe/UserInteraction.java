@@ -1,9 +1,5 @@
 package fr.campus.tictactoe;
 
-import fr.campus.tictactoe.game.Game;
-import fr.campus.tictactoe.game.Gomoku;
-import fr.campus.tictactoe.game.Puissance4;
-import fr.campus.tictactoe.game.TicTacToe;
 import fr.campus.tictactoe.player.ArtificialPlayer;
 import fr.campus.tictactoe.player.HumanPlayer;
 import fr.campus.tictactoe.player.Player;
@@ -12,12 +8,11 @@ import java.util.Scanner;
 
 public class UserInteraction {
     private final static Scanner sc = new Scanner(System.in);
-    Game game;
     private Player player1;
     private Player player2;
 
     public int gameChoice() {
-        System.out.println("À quel jeu souhaitez-vous jouer ?");
+        System.out.println("\n---- CHOIX DE JEU ----");
         System.out.println("1. Tic Tac Toe");
         System.out.println("2. Gomoku");
         System.out.println("3. Puissance 4");
@@ -35,38 +30,11 @@ public class UserInteraction {
                 System.out.println("Erreur : le choix doit être 1, 2 ou 3 !");
             }
         }
-        if (choice == 1) {
-            game = new TicTacToe(3, player1, player2);
-        }
-        if (choice == 2){
-            game = new Gomoku(15, player1, player2);
-        }
-        if (choice == 3){
-            game = new Puissance4(7, player1, player2);
-        }
         return choice;
     }
 
-    /*
-    public int setUpBoardSize() {
-        System.out.print("Entrez la taille du plateau (ex : 3 pour 3x3) : ");
-        int size = 0;
-        while (size < 3) {
-            if (!sc.hasNextInt()) {
-                System.out.println("Erreur : entrez un nombre entier (minimum 3) !");
-                sc.next();
-                continue;
-            }
-            size = sc.nextInt();
-            if (size < 3) {
-                System.out.println("Taille trop petite : le plateau doit être d'au moins 3x3.");
-            }
-        }
-        return size;
-    } */
-
     public int setUpGameMode() {
-        System.out.println("----MODE DE JEU ----");
+        System.out.println("\n---- MODE DE JEU ----");
         System.out.println("1. Deux joueurs humains");
         System.out.println("2. Un humain et un joueur artificiel");
         System.out.println("3. Deux joueurs artificiels");
@@ -113,10 +81,10 @@ public class UserInteraction {
         return new Player[]{player1, player2};
     }
 
-    public int[] askCellChoice(int size, Cell[][] board) {
+    public int[] askCellChoice(int[] size, Cell[][] board) {
         int row, col;
         while (true) {
-            System.out.print("Entrez le numéro de ligne (0, 1 ou 2) : ");
+            System.out.print("Entrez le numéro de ligne (entre 0 et " + (size[0]-1) + ") : ");
             if (!sc.hasNextInt()) {
                 System.out.println("Erreur : entrez un nombre !");
                 sc.next();
@@ -124,7 +92,7 @@ public class UserInteraction {
             }
             row = sc.nextInt();
 
-            System.out.print("Entrez le numéro de colonne (0, 1 ou 2) : ");
+            System.out.print("Entrez le numéro de colonne (entre 0 et " + (size[1]-1) + ") : ");
             if (!sc.hasNextInt()) {
                 System.out.println("Erreur : entrez un nombre !");
                 sc.next();
@@ -132,7 +100,7 @@ public class UserInteraction {
             }
             col = sc.nextInt();
 
-            if (row < 0 || col < 0 || row >= size || col >= size) {
+            if (row < 0 || col < 0 || row >= size[0] || col >= size[1]) {
                 System.out.println("Erreur : coordonnées hors du plateau !");
                 continue;
             }
@@ -146,3 +114,21 @@ public class UserInteraction {
         }
     }
 }
+
+    /*
+    public int setUpBoardSize() {
+        System.out.print("Entrez la taille du plateau (ex : 3 pour 3x3) : ");
+        int size = 0;
+        while (size < 3) {
+            if (!sc.hasNextInt()) {
+                System.out.println("Erreur : entrez un nombre entier (minimum 3) !");
+                sc.next();
+                continue;
+            }
+            size = sc.nextInt();
+            if (size < 3) {
+                System.out.println("Taille trop petite : le plateau doit être d'au moins 3x3.");
+            }
+        }
+        return size;
+    } */

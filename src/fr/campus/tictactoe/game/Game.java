@@ -1,17 +1,21 @@
-package fr.campus.tictactoe;
+package fr.campus.tictactoe.game;
+
+import fr.campus.tictactoe.*;
+import fr.campus.tictactoe.player.HumanPlayer;
+import fr.campus.tictactoe.player.Player;
 
 import java.util.Random;
 
-public class TicTacToe {
-    private final int size;
-    private final Cell[][] board; // tableau de cellules
-    private final Player player1;
-    private final Player player2;
+public abstract class Game {
+    private int size;
+    private Cell[][] board; // tableau de cellules
+    private Player player1;
+    private Player player2;
     private Player currentPlayer;
-    private final UserInteraction iu = new UserInteraction();
-    private final View view = new View();
+    private UserInteraction iu = new UserInteraction();
+    private View view = new View();
 
-    public TicTacToe(int size, Player player1, Player player2) { // constructeur
+    public Game(int size, Player player1, Player player2) { // constructeur
         this.size = size;
         this.player1 = player1;
         this.player2 = player2;
@@ -62,8 +66,8 @@ public class TicTacToe {
             boolean colWin = true;
             for (int i = 0; i < size; i++) {
                 if (!board[i][j].getRepresentation().equals(symbol)) {
-                   colWin = false;
-                   break;
+                    colWin = false;
+                    break;
                 }
             } if (colWin) return true;
         }

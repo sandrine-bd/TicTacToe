@@ -1,7 +1,4 @@
-package fr.campus.tictactoe;
-
-import java.util.Random;
-import java.util.stream.IntStream;
+package fr.campus.tictactoe.player;
 
 public class ArtificialPlayer extends Player {
 

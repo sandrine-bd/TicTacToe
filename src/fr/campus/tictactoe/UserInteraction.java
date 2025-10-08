@@ -1,10 +1,53 @@
 package fr.campus.tictactoe;
 
+import fr.campus.tictactoe.game.Game;
+import fr.campus.tictactoe.game.Gomoku;
+import fr.campus.tictactoe.game.Puissance4;
+import fr.campus.tictactoe.game.TicTacToe;
+import fr.campus.tictactoe.player.ArtificialPlayer;
+import fr.campus.tictactoe.player.HumanPlayer;
+import fr.campus.tictactoe.player.Player;
+
 import java.util.Scanner;
 
 public class UserInteraction {
     private final static Scanner sc = new Scanner(System.in);
+    Game game;
+    private Player player1;
+    private Player player2;
 
+    public int gameChoice() {
+        System.out.println("À quel jeu souhaitez-vous jouer ?");
+        System.out.println("1. Tic Tac Toe");
+        System.out.println("2. Gomoku");
+        System.out.println("3. Puissance 4");
+        System.out.print("Votre choix : ");
+
+        int choice = 0;
+        while (choice < 1 || choice > 3) {
+            if (!sc.hasNextInt()){
+                System.out.println("Erreur : vous devez entrer un nombre entre 1 et 3 !");
+                sc.next();
+                continue;
+            }
+            choice = sc.nextInt();
+            if (choice < 1 || choice > 3) {
+                System.out.println("Erreur : le choix doit être 1, 2 ou 3 !");
+            }
+        }
+        if (choice == 1) {
+            game = new TicTacToe(3, player1, player2);
+        }
+        if (choice == 2){
+            game = new Gomoku(15, player1, player2);
+        }
+        if (choice == 3){
+            game = new Puissance4(7, player1, player2);
+        }
+        return choice;
+    }
+
+    /*
     public int setUpBoardSize() {
         System.out.print("Entrez la taille du plateau (ex : 3 pour 3x3) : ");
         int size = 0;
@@ -20,10 +63,10 @@ public class UserInteraction {
             }
         }
         return size;
-    }
+    } */
 
     public int setUpGameMode() {
-        System.out.println("----CHOIX DE JEU ----");
+        System.out.println("----MODE DE JEU ----");
         System.out.println("1. Deux joueurs humains");
         System.out.println("2. Un humain et un joueur artificiel");
         System.out.println("3. Deux joueurs artificiels");

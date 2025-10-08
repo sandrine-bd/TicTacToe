@@ -1,4 +1,4 @@
-package fr.campus.tictactoe;
+package fr.campus.tictactoe.player;
 
 public class Player {
     private String representation;

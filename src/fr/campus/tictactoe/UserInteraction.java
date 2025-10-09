@@ -8,8 +8,6 @@ import java.util.Scanner;
 
 public class UserInteraction {
     private final static Scanner sc = new Scanner(System.in);
-    private Player player1;
-    private Player player2;
 
     public int gameChoice() {
         System.out.println("\n---- CHOIX DE JEU ----");
@@ -61,21 +59,21 @@ public class UserInteraction {
 
         switch (mode) {
             case 1 -> {
-                player1 = new HumanPlayer(" X ");
-                player2 = new HumanPlayer(" O ");
+                player1 = new HumanPlayer(" \u001B[36mX\u001B[0m "); // code couleur
+                player2 = new HumanPlayer(" \u001B[35mO\u001B[0m ");
             }
             case 2 -> {
-                player1 = new HumanPlayer(" X ");
-                player2 = new ArtificialPlayer(" O ");
+                player1 = new HumanPlayer(" \u001B[36mX\u001B[0m ");
+                player2 = new ArtificialPlayer(" \u001B[35mO\u001B[0m ");
             }
             case 3 -> {
-                player1 = new ArtificialPlayer(" X ");
-                player2 = new ArtificialPlayer(" O ");
+                player1 = new ArtificialPlayer(" \u001B[36mX\u001B[0m ");
+                player2 = new ArtificialPlayer(" \u001B[35mO\u001B[0m ");
             }
             default -> {
                 System.out.println("Choix invalide, par défaut : deux joueurs humains.");
-                player1 = new HumanPlayer(" X ");
-                player2 = new HumanPlayer(" O ");
+                player1 = new HumanPlayer(" \u001B[36mX\u001B[0m ");
+                player2 = new HumanPlayer(" \u001B[35mO\u001B[0m ");
             }
         }
         return new Player[]{player1, player2};

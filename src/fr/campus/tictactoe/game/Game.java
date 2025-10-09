@@ -7,8 +7,8 @@ import fr.campus.tictactoe.player.Player;
 import java.util.Random;
 
 public abstract class Game {
-    private int[] size;
-    private Cell[][] board;
+    protected int[] size;
+    protected Cell[][] board;
     private Player player1;
     private Player player2;
     private Player currentPlayer;
@@ -48,48 +48,6 @@ public abstract class Game {
     }
 
     public boolean isWinner(Player player) {
-        String symbol = player.getRepresentation();
-
-        // lignes
-        for (int i = 0; i < size[0]; i++) {
-            boolean rowWin = true;
-            for (int j = 0; j < size[1]; j++) {
-                if (!board[i][j].getRepresentation().equals(symbol)) {
-                    rowWin = false;
-                    break;
-                }
-            } if (rowWin) return true;
-        }
-
-        // colonnes
-        for (int j = 0; j < size[1]; j++) {
-            boolean colWin = true;
-            for (int i = 0; i < size[0]; i++) {
-                if (!board[i][j].getRepresentation().equals(symbol)) {
-                    colWin = false;
-                    break;
-                }
-            } if (colWin) return true;
-        }
-
-        // diagonale principale (haut-gauche → bas-droit)
-        boolean diag1Win = true;
-        for (int i = 0; i < size[0]; i++) {
-            if (!board[i][i].getRepresentation().equals(symbol)) {
-                diag1Win = false;
-                break;
-            }
-        } if (diag1Win) return true;
-
-        // diagonale secondaire (haut-droit → bas-gauche)
-        boolean diag2Win = true;
-        for (int i = 0; i < size[0]; i++) {
-            if (!board[i][size[0] - 1 - i].getRepresentation().equals(symbol)) {
-                diag2Win = false;
-                break;
-            }
-        } if (diag2Win) return true;
-
         return false;
     }
 
@@ -111,7 +69,7 @@ public abstract class Game {
 
     public void play() {
         while (true) {
-            System.out.println("\n---- TOUR DU JOUEUR " + currentPlayer.getRepresentation() + " ----");
+            System.out.println("\n---- TOUR DU JOUEUR " + currentPlayer.getRepresentation() + "----");
             int[] move = getMoveFromPlayer(currentPlayer);
             setOwner(move[0], move[1], currentPlayer);
             view.displayBoard(size, board);

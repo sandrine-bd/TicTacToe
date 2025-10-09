@@ -33,7 +33,7 @@ public class TicTacToe extends Game {
             } if (colWin) return true;
         }
 
-        // diagonale principale (haut-gauche → bas-droit)
+        // diagonale droite (haut-gauche → bas-droit)
         boolean diag1Win = true;
         for (int i = 0; i < size[0]; i++) {
             if (!board[i][i].getRepresentation().equals(symbol)) {
@@ -42,7 +42,7 @@ public class TicTacToe extends Game {
             }
         } if (diag1Win) return true;
 
-        // diagonale secondaire (haut-droit → bas-gauche)
+        // diagonale gauche (haut-droit → bas-gauche)
         boolean diag2Win = true;
         for (int i = 0; i < size[0]; i++) {
             if (!board[i][size[0] - 1 - i].getRepresentation().equals(symbol)) {

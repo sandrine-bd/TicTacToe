@@ -12,7 +12,7 @@ public abstract class Game {
     private Player player1;
     private Player player2;
     private Player currentPlayer;
-    private UserInteraction iu = new UserInteraction();
+    private UserInteraction ui = new UserInteraction();
     private View view = new View();
 
     public Game(int[] size, Player player1, Player player2) {
@@ -53,7 +53,7 @@ public abstract class Game {
 
     public int[] getMoveFromPlayer(Player player) {
         if (player instanceof HumanPlayer) {
-            return iu.askCellChoice(size, board);
+            return ui.askCellChoice(size, board);
         }
         // sinon : joueur artificiel
         Random rand = new Random();
